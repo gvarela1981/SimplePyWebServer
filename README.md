@@ -13,7 +13,7 @@
 | Requerimiento     | Estado           |
 | -------------     | -------------    |
 | Implementar el webservice usando la biblioteca estándar (BaseHTTPServer).     | completo      |
-| Principios de programación SOLID, en particular la separación en servicios del cliente de la API de terceros.    | parcialmente completado      |
+| Principios de programación SOLID, en particular la separación en servicios del cliente de la API de terceros.    | completo      |
 | Modularización del código en varios archivos.    | completo      |
 | Cobertura con tests y mocks.    | pendiente      |
 | Correr via Docker o equivalente, incluyendo la instalación de dependencias para la misma.     | completo      |
