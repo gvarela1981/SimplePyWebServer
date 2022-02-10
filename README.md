@@ -1,5 +1,3 @@
-# challengeMgrana
-
 ## Requerimientos
 
 | Requerimiento     | Estado           |
