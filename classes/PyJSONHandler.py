@@ -8,6 +8,7 @@ current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfra
 classes_dir = os.path.join(current_dir, "classes")
 sys.path.insert(0,classes_dir) 
 from Messages import Messages
+from CheckUrls import CheckUrls
 
 class PyJSONHandler(server.BaseHTTPRequestHandler):
     def do_HEAD(s):
@@ -18,43 +19,30 @@ class PyJSONHandler(server.BaseHTTPRequestHandler):
         """
         Respond to a GET request.
         """
-        checkPath = s.path[0:].split('/')
-        if(checkPath[1] == ''):
+        url = CheckUrls.checkUrl(s)
+        if(url == "root"):
             s.do_ResponseOK(Messages.default_response)
         else:
-            s.do_Header()
-    def do_Header(s):
-        '''
-        Respond only requested header
-        '''
-        acceptedValues = [
-                            'catalog.xlsx',
-                            'catalog.csv'
-                        ]
-
-        # Remove first '/' from request string
-        requestesHeader = s.path[1:].split('/')
-        dict_s = dict(s.headers)
-        if str(requestesHeader[0]) in acceptedValues:
-            json_response = json.dumps({'status':'Test OK'})
-            s.do_ResponseOK(json_response)
-        else:
-            json_response = json.dumps({'error':'Value not valid'})
-            s.do_ResponseFAIL(json_response)
+            if(url == "accepted_value"):
+                s.do_ResponseOK(Messages.ok_message)
+            else:
+                s.do_ResponseFAIL(Messages.fail_message)
     def do_ResponseOK(s, response):
         '''
-        Send Response
+        Send OK Response
         '''
         s.send_response(200)
-        s.send_header("Content-type", "application/json")
-        s.end_headers()
-        s.wfile.write(response.encode("utf-8"))
-        s.end_headers()
+        s.do_Response(response)
     def do_ResponseFAIL(s, response):
         '''
-        Send Failed Response
+        Send Failed Response status and message
         '''
         s.send_response(400)
+        s.do_Response(response)
+    def do_Response(s, response):
+        ''' 
+        Send closing response
+        '''
         s.send_header("Content-type", "application/json")
         s.end_headers()
         s.wfile.write(response.encode("utf-8"))
