@@ -1,7 +1,13 @@
 import http.server as server
 import socketserver
 import json
+import os,sys,inspect
 
+# Import classes and Handlers
+current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+classes_dir = os.path.join(current_dir, "classes")
+sys.path.insert(0,classes_dir) 
+from Messages import Messages
 
 class PyJSONHandler(server.BaseHTTPRequestHandler):
     def do_HEAD(s):
@@ -12,10 +18,9 @@ class PyJSONHandler(server.BaseHTTPRequestHandler):
         """
         Respond to a GET request.
         """
-        json_response = json.dumps({'status':'Default response'})
         checkPath = s.path[0:].split('/')
         if(checkPath[1] == ''):
-            s.do_ResponseOK(json_response)
+            s.do_ResponseOK(Messages.default_response)
         else:
             s.do_Header()
     def do_Header(s):
