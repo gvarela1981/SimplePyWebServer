@@ -27,12 +27,6 @@ class PyJSONHandler(server.BaseHTTPRequestHandler):
                 s.do_Response(Messages.ok_message, Messages.ok_status)
             else:
                 s.do_Response(Messages.fail_message, Messages.not_found_status)
-    def do_ResponseOK(s, response):
-        '''
-        Send OK Response
-        '''
-        s.send_response(200)
-        s.do_Response(response)
     def do_Response(s, response, status):
         ''' 
         Send Response and status
