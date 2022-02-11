@@ -21,28 +21,23 @@ class PyJSONHandler(server.BaseHTTPRequestHandler):
         """
         url = CheckUrls.checkUrl(s)
         if(url == "root"):
-            s.do_ResponseOK(Messages.default_response)
+            s.do_Response(Messages.default_response, Messages.ok_status)
         else:
             if(url == "accepted_value"):
-                s.do_ResponseOK(Messages.ok_message)
+                s.do_Response(Messages.ok_message, Messages.ok_status)
             else:
-                s.do_ResponseFAIL(Messages.fail_message)
+                s.do_Response(Messages.fail_message, Messages.not_found_status)
     def do_ResponseOK(s, response):
         '''
         Send OK Response
         '''
         s.send_response(200)
         s.do_Response(response)
-    def do_ResponseFAIL(s, response):
-        '''
-        Send Failed Response status and message
-        '''
-        s.send_response(400)
-        s.do_Response(response)
-    def do_Response(s, response):
+    def do_Response(s, response, status):
         ''' 
-        Send closing response
+        Send Response and status
         '''
+        s.send_response(status)
         s.send_header("Content-type", "application/json")
         s.end_headers()
         s.wfile.write(response.encode("utf-8"))
